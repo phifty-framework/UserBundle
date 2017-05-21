@@ -1,7 +1,7 @@
 <?php
 namespace UserBundle\Model;
 
-class RoleCollectionBase  extends \LazyRecord\BaseCollection {
+class RoleCollectionBase  extends \Maghead\Runtime\Collection {
 const schema_proxy_class = '\\UserBundle\\Model\\RoleSchemaProxy';
 const model_class = '\\UserBundle\\Model\\Role';
 const table = 'roles';

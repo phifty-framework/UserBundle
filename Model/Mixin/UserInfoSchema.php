@@ -1,10 +1,10 @@
 <?php
 namespace UserBundle\Model\Mixin;
 
-use LazyRecord\Schema\MixinSchemaDeclare;
+use Maghead\Schema\MixinDeclareSchema;
 use UserBundle\Model\RoleSchema;
 
-class UserInfoSchema extends MixinSchemaDeclare
+class UserInfoSchema extends MixinDeclareSchema
 {
     public function schema($options = array())
     {

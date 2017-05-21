@@ -1,9 +1,9 @@
 <?php
 namespace UserBundle\Model;
 
-use LazyRecord\Schema\SchemaDeclare;
+use Maghead\Schema\DeclareSchema;
 
-class UserSchema extends SchemaDeclare
+class UserSchema extends DeclareSchema
 {
     public function schema()
     {
