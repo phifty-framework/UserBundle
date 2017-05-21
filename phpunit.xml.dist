@@ -11,7 +11,8 @@
   <testsuites>
     <testsuite name="UserBundle">
       <directory suffix="Test.php">.</directory>
-      <exclude>vendor</exclude>
+      <exclude>vendor/</exclude>
+      <exclude>frameworks/</exclude>
     </testsuite>
   </testsuites>
 
