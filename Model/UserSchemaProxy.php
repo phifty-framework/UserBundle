@@ -1,9 +1,9 @@
 <?php
 namespace UserBundle\Model;
 
-use LazyRecord;
-use LazyRecord\Schema\RuntimeSchema;
-use LazyRecord\Schema\Relationship;
+use Maghead;
+use Maghead\Schema\DeclareSchema\RuntimeSchema;
+use Maghead\Schema\DeclareSchema\Relationship;
 
 class UserSchemaProxy extends RuntimeSchema
 {

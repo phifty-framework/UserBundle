@@ -1,6 +1,6 @@
 <?php
 namespace UserBundle\Model;
-use LazyRecord\Schema;
+use Maghead\Schema\DeclareSchema;
 
 class UserRoleSchema extends Schema
 {

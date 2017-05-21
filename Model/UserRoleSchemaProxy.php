@@ -1,9 +1,9 @@
 <?php
 namespace UserBundle\Model;
 
-use LazyRecord;
-use LazyRecord\Schema\RuntimeSchema;
-use LazyRecord\Schema\Relationship;
+use Maghead;
+use Maghead\Schema\DeclareSchema\RuntimeSchema;
+use Maghead\Schema\DeclareSchema\Relationship;
 
 class UserRoleSchemaProxy extends RuntimeSchema
 {
@@ -76,7 +76,7 @@ class UserRoleSchemaProxy extends RuntimeSchema
         $this->collectionClass = 'UserBundle\\Model\\UserRoleCollection';
         $this->label           = 'UserRole';
         $this->relations       = array( 
-  'user' => \LazyRecord\Schema\Relationship::__set_state(array( 
+  'user' => \Maghead\Schema\DeclareSchema\Relationship::__set_state(array( 
   'data' => array( 
       'type' => 4,
       'self_schema' => 'UserBundle\\Model\\UserRoleSchema',
@@ -85,7 +85,7 @@ class UserRoleSchemaProxy extends RuntimeSchema
       'foreign_column' => 'id',
     ),
 )),
-  'role' => \LazyRecord\Schema\Relationship::__set_state(array( 
+  'role' => \Maghead\Schema\DeclareSchema\Relationship::__set_state(array( 
   'data' => array( 
       'type' => 4,
       'self_schema' => 'UserBundle\\Model\\UserRoleSchema',
