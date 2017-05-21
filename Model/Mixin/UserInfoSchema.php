@@ -1,6 +1,8 @@
 <?php
 namespace UserBundle\Model\Mixin;
+
 use LazyRecord\Schema\MixinSchemaDeclare;
+use UserBundle\Model\RoleSchema;
 
 class UserInfoSchema extends MixinSchemaDeclare
 {
@@ -37,10 +39,10 @@ class UserInfoSchema extends MixinSchemaDeclare
             $this->many('user_roles','UserBundle\\Model\\UserRoleSchema','user_id','id');
             $this->manyToMany('roles','user_roles','role');
 
-        } elseif ($options['CustomRole']) {
+        } else if ($options['CustomRole']) {
             $this->column( 'role')
                 ->renderAs('SelectInput')
-                ->refer('UserBundle\\Model\\RoleSchema')
+                ->refer(RoleSchema::class)
                 ->validValues(function() {
                     $roles = new \UserBundle\Model\RoleCollection;
                     return $roles->toPairs('label','identity');

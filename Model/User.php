@@ -1,7 +1,9 @@
 <?php
 namespace UserBundle\Model;
+
 use Phifty\Security\CurrentUserRole;
 use UserBundle\Model\UserBase;
+use App\CurrentUser;
 
 class User extends UserBase
     implements CurrentUserRole
@@ -138,8 +140,37 @@ class User extends UserBase
         return array();
     }
 
+
+    public function encryptPassword($plainPassword)
+    {
+        return sha1($plainPassword);
+    }
+
+    public function setPassword($plainPassword)
+    {
+        $this->password = $this->encryptPassword($plainPassword);
+    }
+
+    public function matchPassword($plainPassword)
+    {
+        return $this->password === $this->encryptPassword($plainPassword);
+    }
+
     public function setPassword($plainPassword) {
         $this->password = sha1($plainPassword);
     }
 
+    public function verifyOwnership(CurrentUser $currentUser)
+    {
+        if ($currentUser->isAdmin()) {
+            return true;
+        }
+
+        return $this->id == $currentUser->id;
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
 }

@@ -7,10 +7,16 @@ use UserBundle\Model\RoleCollection;
 
 class UserCRUDHandler extends \AdminUI\CRUDHandler
 {
-    /* CRUD Attributes */
     public $modelClass = 'UserBundle\\Model\\User';
+
     public $crudId     = 'user';
+
+    public $resourceId = 'user';
+
     public $listColumns = array('id','email','role');
+
+    public $quicksearchFields = [ 'email', 'account' ];
+    
 
     public function editRegionActionPrepare()
     {

@@ -6,7 +6,6 @@ class ChangePassword extends UpdateRecordAction
 {
     public $recordClass = 'UserBundle\\Model\\User';
 
-
     public function __construct( $args = array(), $record = null, $currentUser = null ) 
     {
         $cUser = kernel()->currentUser;

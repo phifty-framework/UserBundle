@@ -11,12 +11,11 @@ class ConfirmController extends Controller
         $bundle = \UserBundle\UserBundle::getInstance();
         $template = $bundle->config('confirmation.template') ?: '@UserBundle/confirmed.html';
 
-        $user = new User;
-        $user->load( array('auth_token' => $token) );
+        $user = User::load(['auth_token' => $token]);
 
         // if it's a valid token
-        if ( $user->id ) {
-            $user->update(array('confirmed' => true));
+        if ($user->id) {
+            $ret = $user->update(array('confirmed' => true));
             return $this->render($template, array(
                 'success' => true,
                 'title' => _('電子郵件確認成功'),

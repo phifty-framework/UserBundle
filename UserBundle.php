@@ -68,8 +68,9 @@ class UserBundle extends Bundle
         // this is overrided by AdminUI routes
         $this->route( '/bs/logout' , 'LogoutController' ); // refers to \User\Controller\Logout
         $this->route( '/bs/logged_out' , 'LogoutPage' );
+        // $this->route('/login/:code', 'OrgLoginController');
 
-        if ( $this->config('allow_register') ) {
+        if ( $this->config('AllowSignUp') ) {
             $this->route( '/bs/user/register' , 'RegisterController' );
         }
 
@@ -79,15 +80,22 @@ class UserBundle extends Bundle
             return;
         }
 
-        $this->addRecordAction('Role',array('Create','Update','Delete'));
+        $this->addRecordAction('Role',array(
+            array('prefix' => 'Create'),
+            array('prefix' => 'Update'),
+            array('prefix' => 'Delete')
+        ));
+
         $this->mount('/bs/user', 'UserCRUDHandler' );
         $this->mount('/bs/role', 'RoleCRUDHandler' );
 
+        $this->route('/=/current_user/csrf', 'CsrfController');
+
         $self = $this;
         $this->kernel->event->register( 'adminui.init_menu' , function($menu) use ($self) {
+
             $kernel = kernel();
             $currentUser = $kernel->currentUser;
-
             $folder = null;
 
             if ( $self->config('Management.User') != false ) {

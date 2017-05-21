@@ -1,8 +1,11 @@
 <?php
-namespace UserBundle\Action;
-use ActionKit\RecordAction\CreateRecordAction;
 
-class CreateUser extends CreateRecordAction
+namespace UserBundle\Action;
+
+use ActionKit\RecordAction\CreateRecordAction;
+use ActionKit\ActionDescriptor;
+
+class CreateUser extends CreateRecordAction implements ActionDescriptor
 {
     public $recordClass = 'UserBundle\\Model\\User';
 
@@ -12,6 +15,18 @@ class CreateUser extends CreateRecordAction
         $this->recordClass = $cUser->getModelClass();
         return parent::__construct( $args, $record, $currentUser );
     }
+
+    public function describe()
+    {
+        $currentUser = kernel()->currentUser;
+        $record = $this->getRecord();
+        return sprintf("%s (%s) 建立帳號 %s (%s)",
+            $currentUser->name, $currentUser->account,
+            $record->name,
+            $record->account);
+    }
+
+    public function description() { return '建立帳號'; }
 
     public function schema() 
     {
@@ -23,6 +38,29 @@ class CreateUser extends CreateRecordAction
             $this->filterOut('role','password');
         }
 
+        // override account attributes
+        $this->param('account')
+            ->required()
+            ->validator(function($value) {
+                if (preg_match('/\W/', $value)) {
+                    return [false, "帳號不可使用英文、數字、底線之外的字元。"];
+                }
+                if (strlen($value) < 3) {
+                    return [false, "帳號名稱長度不足，請使用三個以上的字元。"];
+                }
+                return true;
+            });
+
+        $this->param('email')
+            ->required()
+            ->validator(function($value) {
+                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    return [false, "不合法的 E-mail"];
+                }
+                return true;
+            });
+
+
         $this->param('password1')
             ->renderAs('PasswordInput')
             ->label('密碼')
@@ -31,6 +69,69 @@ class CreateUser extends CreateRecordAction
             ->renderAs('PasswordInput')
             ->label('密碼確認')
             ;
+
+
+        $this->param('set_password')
+            ->label('密碼設定')
+            ;
+    }
+
+    /**
+     * Validate the account identitifier
+     *
+     * @param string $account
+     *
+     * @return true on success, string on error
+     */
+    public function validateAccount($account)
+    {
+        if (preg_match('/\W/', $account)) {
+            return _('不合法的帳號字元。');
+        }
+        if (strlen($account) < 3) {
+            return _('帳號長度必須為三個字元以上。');
+        }
+        return true;
+    }
+
+    public function tryLoadUser($account, $email, $preferAccount = true)
+    {
+        if (! $account && ! $email) {
+            return _('請輸入帳號或 E-mail');
+        }
+
+
+
+        $user = new User;
+
+        if ($preferAccount && $account) {
+
+
+            $user->load(array('account' => $account));
+            if ($user->id) {
+                $this->invalidField('account', '重複的帳號。');
+                return _('這個帳號已經被使用囉。');
+            }
+
+        } else if ($email) {
+
+            $user->load(array('email' => $email));
+            if ($user->id) {
+                $this->invalidField('email', '重複的帳號。');
+                return _('這個 E-mail 地址已經被使用囉。');
+            }
+
+        } else {
+
+            return _('輸入資料錯誤。');
+
+        }
+        return true;
+    }
+    
+    public function successMessage($ret)
+    {
+        return _('成功建立使用者資料。');
     }
 
     public function run()
@@ -46,31 +147,45 @@ class CreateUser extends CreateRecordAction
             return $this->error( _('Please Enter Your Email Or Account.') );
         }
 
-        $user = new \UserBundle\Model\User;
-
-        if ( $account ) {
-            $user->load(array('account' => $account));
-        } else if ( $email ) {
-            $user->load(array('email' => $email));
+        $ret = $this->tryLoadUser($account, $email);
+        if (true !== $ret) {
+            if ($account) {
+                $this->invalidField('account', $ret);
+            } else if ($email) {
+                $this->invalidField('email', $ret);
+            }
+            return $this->error($ret);
         }
 
-        if ( $user->id ) {
-            return $this->error( _('Duplicated Email or Account, Please Confirm.') );
+        $ret = $this->validateAccount($account);
+        if (true !== $ret) {
+            $this->invalidField('account', $ret);
+            return $this->error($ret);
         }
 
-        if ( ! $password1 || ! $password2 ) {
-            return $this->error( _('Please enter password.') );
+        $plainPassword = null;
+        if ($setPasswordBy = $this->arg('set_password')) {
+            if ($ret = $this->setPasswordArgumentHashBy($setPasswordBy)) {
+                list($success, $result) = $ret;
+                if ($success === false) {
+                    return $this->error($result);
+                } else {
+                    $plainPassword = $result;
+                }
+            }
         }
 
-        if ( $password1 != $password2 ) {
-            return $this->error( _('Password is not correct.') );
+        $ret = parent::run();
+
+        if ($setPasswordBy = $this->arg('set_password')) {
+            if ($setPasswordBy === "email" && $plainPassword) {
+                // Generate a new password and send the password to the user
+                $user = $this->getRecord();
+                $email = new UserSetPasswordEmail($user, $plainPassword);
+                $email->send();
+            }
         }
 
-        if ( strlen($password1) < 6 ) {
-            return $this->error( _('Password should be more than 6 chars') );
-        }
-
-        $this->setArgument( 'password' , sha1( $password1 ) );
         return parent::run();
     }
 }
