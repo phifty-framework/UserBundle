@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+require 'main.php';
+
+if ( count($argv) < 2 ) {
+    exit(0);
+}
+
+$userId = $argv[1];
+$user = new UserBundle\Model\User;
+$user->load(array( 'account' => $userId ));
+if ( $user->id ) {
+    $ret = $user->delete();
+    if ( $ret->success ) {
+        echo "User ", $userId , " deleted\n";
+    }
+}
+

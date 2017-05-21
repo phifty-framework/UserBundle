@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+require 'main.php';
+
+use GetOptionKit\GetOptionKit;
+$opt = new GetOptionKit;
+$opt->add( 'r|role?' , 'role' );
+$opt->add( 'p|pass?' , 'password' );
+
+$result = $opt->parse( $argv );
+
+
+$args = $result->getArguments();
+if ( count($args) < 2 ) {
+    $opt->specs->printOptions();
+    exit(0);
+}
+
+$userId = $args[1];
+$user = new UserBundle\Model\User;
+
+$password = $result->pass;
+if ( ! $password ) {
+    $password = UserBundle\Utils::generate_password(6);
+}
+
+$ret = $user->create(array( 
+    'account'    => $userId,
+    'email'      => $userId . '@localhost',
+    'password'   => sha1($password),
+    'remark'     => $password,
+    'confirmed'  => true,
+));
+
+echo "User created: " , join(', ', array( "id: " . $ret->id, "account: $userId" , "password: $password" )), "\n";

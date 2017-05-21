@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+require 'main.php';
+// $users = new UserBundle\Model\UserCollection;
+
+function C($bundleName, $modelName, $arg = null ) {
+    $class = sprintf('%s\\Model\\%sCollection', $bundleName, $modelName);
+    if ( $arg ) {
+        return new $class($arg);
+    }
+    return new $class;
+}
+
+function M($bundleName, $modelName, $arg = null ) {
+    $class = sprintf('%s\\Model\\%s', $bundleName, $modelName);
+    if ( $arg ) {
+        return new $class($arg);
+    }
+    return new $class;
+}
+
+$users = C('UserBundle','User');
+foreach( $users as $user ) {
+    echo join(' ', [$user->id, $user->account, $user->password, $user->auth_token, $user->remark] ) , "\n";
+}
