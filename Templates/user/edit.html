@@ -1,0 +1,66 @@
+{# 
+vim:filetype=htmldjango: 
+#}
+{% extends '@CRUD/edit.html' %}
+
+{% block section_body %}
+
+<div class="tabs">
+    <ul>
+        <li><a href="#tabAccount">帳戶資料</a></li>
+        {% if CRUD.Record.id %}
+            <li><a href="#tabChangePassword">修改密碼</a></li>
+        {% endif %}
+    </ul>
+    <div id="tabAccount">
+        <form class="ajax-action" enctype="multipart/form-data" method="POST">
+            {% set bundle = Kernel.bundle('UserBundle') %}
+
+            {% if CRUD.Record.id %}
+                {{ forms.hidden('id', CRUD.Record.id) }}
+            {% endif %}
+
+
+            {{ CRUD.Action.renderSignatureWidget|raw }}
+
+            {{ CRUD.Action.renderField('account')|raw }}
+
+            {{ CRUD.Action.renderField('email')|raw }}
+
+
+            {% if not CRUD.Record.id %}
+                {{ CRUD.Action.renderField('password1')|raw }}
+                {{ CRUD.Action.renderField('password2')|raw }}
+            {% endif %}
+
+            {% if bundle.config('MultiRole') %}
+                {% include '@UserBundle/user/role_editor.html' %}
+            {% else %}
+                {# for single user role #}
+                {{ CRUD.Action.renderField('role')|raw }}
+            {% endif %}
+
+            <hr/>
+
+            <fieldset>
+                <legend>訊息通知</legend>
+                {{ CRUD.Action.renderField('receive_email') | raw }}
+
+                {#
+                {{ CRUD.Action.renderField('receive_sms') | raw }}
+                #}
+            </fieldset>
+
+
+
+            {% include '@CRUD/controll.html' %}
+        </form>
+    </div>
+
+    {% if CRUD.Record.id %}
+        <div id="tabChangePassword">
+            {{ changePasswordAction.asView('AdminUI\\Action\\View\\StackView',{ ajax: true, submit_label: _('Change Password') }).render()|raw }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

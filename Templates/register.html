@@ -1,0 +1,31 @@
+{% extends '@AdminUI/page.html' %}
+{% import '@CoreBundle/phifty/forms.html' as forms %}
+{% block title %}{{ parent() }} - Login{% endblock %}
+{% block content %}
+
+<div id="result-container" class="w-400" style=" margin: 0 auto; margin-top: 30px;"> </div>
+<div id="login-box" class="center-box w-400">
+    <h1>{% trans 'Register' %}</h1>
+    <div>
+        <form id="registerForm" method="post">
+            {{ forms.action('UserBundle::Action::RegisterUser') }}
+
+            {{ forms.field( 'Account', 'text' , 'account' , '' , 1 ) }}
+
+            {{ forms.field( 'Name', 'text' , 'name' , '' , 1 ) }}
+
+            {{ forms.field( 'E-mail', 'email' , 'email' , '' , 1 ) }}
+            {{ forms.field( 'Password', 'password' , 'password1' , '' , 1 ) }}
+            {{ forms.field( 'Password Confirm', 'password' , 'password2' , '' , 1 ) }}
+            <div class="button-group">
+                <input class="button submit" type="submit" value="{% trans 'Register' %}"/>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    Action.form( $('#registerForm') ).plug( ActionMsgbox, { container: $('#result-container').get(0) });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{#
+vim:filetype=htmldjango:
+#}
+
+{% set subview = CRUD.Action.asView('ActionKit\\View\\StackView',{ "no_form": 1 }) %}
+{{ subview.buildRelationalActionViewForExistingRecords('roles').render() |raw }}
+
+{# required variarbles "roles" #}
+{#
+<div class="v-field">
+    <div class="label">使用者角色</div>
+    <div class="input">
+        <select multiple="true" name="roles[]">
+            <option value=""></option>
+            {% for role in roles %}
+            <option value="{{ role.identity }}" {% if CRUD.Record and CRUD.Record.hasRole(role) %}selected="selected"{% endif %}>{{ _(role.label) }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<script>
+jQuery(function($) {
+    $("select[multiple]").bsmSelect({
+        addItemTarget: 'bottom',
+        animate: true
+    });
+});
+</script>
+#}

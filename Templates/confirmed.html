@@ -1,0 +1,17 @@
+{% extends '@AdminUI/page.html' %}
+{% block title %}{{ parent() }} - Login{% endblock %}
+{% block content %}
+
+<div class="w-400" style=" margin: 0 auto; margin-top: 30px;"> </div>
+    <div class="message {% if success %}success{% else %}error{% endif %}">
+        {% if success %}
+            <span class="ui-icon ui-icon-check" style="float: left;"></span>
+        {% else %}
+            <span class="ui-icon ui-icon-notice" style="float: left;"></span>
+        {% endif %}
+        <div class="text">{{title}}</div>
+        <div class="desc">{{desc}}</div>
+    </div>
+</div>
+
+{% endblock %}

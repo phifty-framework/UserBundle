@@ -1,0 +1,62 @@
+{# 
+vim:filetype=htmldjango: 
+#}
+{% extends '@CRUD/edit.html' %}
+{% block section_body %}
+
+
+<div id="tabs-{{ CRUD.Record.id|default('create') }}" class="tabs">
+    <ul>
+        <li><a href="#tabRole">{% trans 'Role' %}</a></li>
+        {% if Kernel.acl.can( Kernel.currentUser, 'user_roles','edit_permission') and CRUD.Record.id %}
+            <li><a href="#tabRolePermissions">權限設定</a></li>
+        {% endif %}
+    </ul>
+    <div id="tabRole">
+        {{ parent() }}
+    </div>
+    {% if Kernel.acl.can( Kernel.currentUser, 'user_roles','edit_permission') and CRUD.Record.id %}
+    <div id="tabRolePermissions">
+        <form method="post" class="ajax-action">
+            <input type="hidden" name="action" value="UserBundle::Action::SavePermissions"/>
+            {% for resource in accessResources %}
+                {% set controls = resource.getControlsByRole( CRUD.Record.identity ) %}
+                {% if controls.size() %}
+                <fieldset> 
+                    <legend>{{ _(resource.label) }}</legend>
+                    <ul class="permission-controls" style="list-style: none; padding: 5px 10px;">
+                    {% for control in controls %}
+                        {% set rule = control.rule %}
+                        <li>
+                            {# ({{control.id}}) #}
+
+                            {% set elementId = "control-" ~ random() %}
+                            <input type="hidden" 
+                                id="{{elementId}}"
+                                name="controls[{{ control.id }}]"
+                                value="{{ control.allow ? 1 : 0 }}"/>
+                            <label>
+                                <input type="checkbox" 
+                                    {% if control.allow %}checked="checked"{% endif %}
+                                    onclick=" (function(o) {
+                                        var el = document.getElementById( '{{ elementId }}');
+                                        el.value = (o.checked ? '1' : '0');
+                                        console.log(el.value);
+                                        return true;
+                                    })(this); "/>
+                                {{ _(rule.operation_label) }}
+                            </label>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </fieldset>
+                {% endif %}
+            {% endfor %}
+            <div class="button-group">
+                <input type="submit" class="button create" value="Save"/>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
