@@ -12,6 +12,7 @@
   <testsuites>
     <testsuite name="UserBundle">
       <directory suffix="Test.php">.</directory>
+      <exclude>vendor</exclude>
     </testsuite>
   </testsuites>
 
