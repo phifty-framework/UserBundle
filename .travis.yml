@@ -23,6 +23,8 @@ before_script:
 - rm -f bootstrap.php
 - php vendor/bin/phifty bootstrap
 - php vendor/bin/maghead use config/database.yml
+- php vendor/bin/maghead db create
+- php vendor/bin/maghead schema build
 
 script:
 - time php bootstrap.php
