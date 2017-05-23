@@ -17,8 +17,8 @@ install:
 before_script:
 - phpenv rehash
 - mkdir -p config app cache bundles
-- cp -v frameworks/phifty/config/framework.dev.yml config/framework.yml
-- cp -v frameworks/phifty/config/database.dev.yml config/database.yml
+- cp -v config/framework.dev.yml config/framework.yml
+- cp -v config/database.dev.yml config/database.yml
 - cp -r frameworks/phifty/app .
 - rm -f bootstrap.php
 - php vendor/bin/phifty bootstrap
