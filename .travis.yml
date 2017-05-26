@@ -13,6 +13,8 @@ matrix:
 install:
 - travis_retry composer install
 - travis_retry composer require "satooshi/php-coveralls" "^1" --dev --no-update
+- ./frameworks/phifty/travis/install-apcu
+- ./frameworks/phifty/travis/install-yaml
 
 before_script:
 - phpenv rehash
@@ -37,6 +39,7 @@ cache:
   apt: true
   directories:
   - vendor
+  - exts
 
 notifications:
   email:
