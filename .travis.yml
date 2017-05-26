@@ -15,6 +15,7 @@ install:
 - travis_retry composer require "satooshi/php-coveralls" "^1" --dev --no-update
 - ./frameworks/phifty/travis/install-apcu
 - ./frameworks/phifty/travis/install-yaml
+- phpenv config-add ./frameworks/phifty/travis/config/$TRAVIS_PHP_VERSION.ini
 
 before_script:
 - phpenv rehash
