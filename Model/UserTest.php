@@ -42,5 +42,10 @@ class UserTest extends ModelTestCase
 
         $user = User::load($ret->key);
         $user->addRole('admin');
+
+        $this->assertTrue($user->hasRole('admin'));
+        $this->assertFalse($user->hasRole('foo'));
+
+        $user->removeRole('admin');
     }
 }

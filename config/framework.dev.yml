@@ -37,3 +37,4 @@ ServiceProviders:
 Bundles:
   UserBundle:
     UseAccount: true
+    MultiRole: true

@@ -52,30 +52,31 @@ class User extends UserBase
 
     public function addRole($roleId)
     {
-        if ( $this->hasRole($roleId) ) {
+        if ($this->hasRole($roleId)) {
             return;
         }
 
-        if( isset($this->roles) ) {
-            $role = Role::loadOrCreate(['identity' => $roleId],'identity');
-            if (! $role->id)
-                throw new Exception("Role $roleId not found.");
+        // If multi-roles are defined
+        if (isset($this->roles)) {
+            $role = Role::loadOrCreate([ 'identity' => $roleId ],'identity');
+            if (! $role->id) {
+                throw new Exception("Can't create or load Role record. '$roleId'");
+            }
 
-            $ret = UserRole::loadOrCreate(
-                array(
+            $record = UserRole::loadOrCreate(
+                [
                     'role_id' => $role->id,
                     'user_id' => $this->id
-                ),
-                array('role_id','user_id')
+                ],
+                ['role_id','user_id']
             );
-            if (! $ret->success) {
-                throw $ret->exception;
+            if (! $record) {
+                throw new Exception("Can't create or load UserRole record");
             }
+
             return $role;
-        } 
-        elseif( isset($this->role) ) 
-        {
-            $this->update(array('role' => $roleId));
+        } else if (isset($this->role)) {
+            $this->update([ 'role' => $roleId ]);
         }
     }
 
@@ -90,15 +91,17 @@ class User extends UserBase
      */
     public function removeRole($roleId)
     {
-        if ( $this->hasRole($roleId) ) {
-            $role = new Role(array( 'identity' => $roleId ));
-            if ( $role->id ) {
-                $userRole = new UserRole;
-                $ret = $userRole->load(array( 'role_id' => $role->id , 'user_id' => $this->id ));
-                if( $userRole->id ) {
-                    $userRole->delete();
-                }
-            }
+        if (!$this->hasRole($roleId)) {
+            return;
+        }
+        $role = Role::load([ 'identity' => $roleId ]);
+        if (!$role) {
+            return;
+        }
+
+        $userRole = UserRole::load([ 'role_id' => $role->id , 'user_id' => $this->id ]);
+        if ($userRole) {
+            $userRole->delete();
         }
     }
 

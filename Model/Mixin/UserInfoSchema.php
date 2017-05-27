@@ -34,7 +34,7 @@ class UserInfoSchema extends MixinDeclareSchema
             ;
 
 
-        if ( $options['MultiRole']) {
+        if ($options['MultiRole']) {
             $this->many('user_roles','UserBundle\\Model\\UserRoleSchema','user_id','id');
             $this->manyToMany('roles','user_roles','role');
 
