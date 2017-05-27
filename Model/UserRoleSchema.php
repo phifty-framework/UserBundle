@@ -1,17 +1,21 @@
 <?php
+
 namespace UserBundle\Model;
+
 use Maghead\Schema\DeclareSchema;
 
-class UserRoleSchema extends Schema
+class UserRoleSchema extends DeclareSchema
 {
     public function schema()
     {
         $this->column('user_id')
             ->integer()
+            ->unsigned()
             ->required();
 
         $this->column('role_id')
             ->integer()
+            ->unsigned()
             ->required();
 
         $cuser = kernel()->currentUser;

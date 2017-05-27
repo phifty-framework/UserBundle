@@ -1,5 +1,7 @@
 <?php
+
 namespace UserBundle\Model;
+
 use Maghead\Schema\DeclareSchema;
 
 class RoleSchema extends DeclareSchema
