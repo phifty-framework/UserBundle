@@ -7,3 +7,5 @@ Model/*RepoBase.php
 Model/*SchemaProxy.php
 config/*.php
 /frameworks
+config/database.yml
+config/framework.yml
