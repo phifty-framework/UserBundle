@@ -23,6 +23,7 @@ before_script:
 - php vendor/bin/maghead use config/database.yml
 - php vendor/bin/maghead db create
 - php vendor/bin/maghead schema build
+- php vendor/bin/maghead sql --rebuild
 
 script:
 - time php bootstrap.php
