@@ -33,7 +33,7 @@ class User extends UserBase
      * For single role configuration compatibility
      * We provide this method to get roles from both `role` and `roles`
      */
-    public function getRoles() 
+    public function getRoles()
     {
         if( isset($this->roles) ) {
             if( $roles = $this->roles->items() ) {
@@ -50,28 +50,27 @@ class User extends UserBase
         return array();
     }
 
-    public function addRole($roleId) 
+    public function addRole($roleId)
     {
         if ( $this->hasRole($roleId) ) {
             return;
         }
 
         if( isset($this->roles) ) {
-            $role = new Role;
-            $role->loadOrCreate(array('identity' => $roleId),'identity');
+            $role = Role::loadOrCreate(['identity' => $roleId],'identity');
             if( ! $role->id )
                 throw new Exception("Role $roleId not found.");
 
-            $userRole = new UserRole;
-            $ret = $userRole->loadOrCreate(
+            $ret = UserRole::loadOrCreate(
                 array(
                     'role_id' => $role->id,
                     'user_id' => $this->id
                 ),
                 array('role_id','user_id')
             );
-            if( ! $ret->success )
+            if (! $ret->success) {
                 throw $ret->exception;
+            }
             return $role;
         } 
         elseif( isset($this->role) ) 

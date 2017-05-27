@@ -33,4 +33,14 @@ class UserTest extends ModelTestCase
         $this->assertResultSuccess($ret);
     }
 
+    public function testUserAddRole()
+    {
+        $ret = User::create([
+            'account' => 'admin',
+        ]);
+        $this->assertResultSuccess($ret);
+
+        $user = User::load($ret->key);
+        $user->addRole('admin');
+    }
 }
