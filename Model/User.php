@@ -58,7 +58,7 @@ class User extends UserBase
 
         if( isset($this->roles) ) {
             $role = Role::loadOrCreate(['identity' => $roleId],'identity');
-            if( ! $role->id )
+            if (! $role->id)
                 throw new Exception("Role $roleId not found.");
 
             $ret = UserRole::loadOrCreate(

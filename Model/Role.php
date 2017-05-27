@@ -18,7 +18,7 @@ extends \UserBundle\Model\RoleBase
         return $args;
     }
 
-    public function afterCreate($args) 
+    public function afterCreate()
     {
         if ( class_exists('Kendo\\Model\\AccessControlCollection', true) ) {
             $newRule = new \Kendo\Model\AccessControl;
@@ -34,13 +34,13 @@ extends \UserBundle\Model\RoleBase
         }
     }
 
-    public function afterDelete($args)
+    public function afterDelete()
     {
-        if ( class_exists('Kendo\\Model\\AccessControlCollection', true) ) {
+        if (class_exists('Kendo\\Model\\AccessControlCollection', true) ) {
             $rules = new \Kendo\Model\AccessControlCollection;
             $rules->where()
                 ->equal('role',$this->identity);
-            foreach( $rules as $rule ) {
+            foreach ($rules as $rule) {
                 $rule->delete();
             }
         }
