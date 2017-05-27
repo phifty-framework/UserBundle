@@ -27,7 +27,7 @@ class UserTest extends ModelTestCase
 
         $user = User::load($ret->key);
         $this->assertNotNull($user);
-        $this->assertInstanceOf('UserBundle\\Model\\User', $user);
+        $this->assertInstanceOf(User::class, $user);
 
         $ret = $user->delete();
         $this->assertResultSuccess($ret);
