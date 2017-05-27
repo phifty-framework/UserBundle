@@ -23,7 +23,6 @@ class UserInfoSchema extends MixinDeclareSchema
             ->varchar(80)
             ->label( _('E-mail') );
 
-
         $this->column('name')
             ->varchar(30)
             ->label('姓名')

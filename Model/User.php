@@ -19,11 +19,11 @@ class User extends UserBase
         return $args;
     }
 
-    public function beforeDelete($args) 
+    public function beforeDelete()
     {
         // if we have multi-roles, delete these associative records.
-        if( isset($this->roles) ) {
-            foreach( $this->getRoles() as $r ) {
+        if (isset($this->roles)) {
+            foreach ($this->getRoles() as $r ) {
                 $this->removeRole($r);
             }
         }
@@ -154,10 +154,6 @@ class User extends UserBase
     public function matchPassword($plainPassword)
     {
         return $this->password === $this->encryptPassword($plainPassword);
-    }
-
-    public function setPassword($plainPassword) {
-        $this->password = sha1($plainPassword);
     }
 
     public function verifyOwnership(CurrentUser $currentUser)

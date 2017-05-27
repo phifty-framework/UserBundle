@@ -16,4 +16,14 @@ class UserTest extends ModelTestCase
     {
         return [new UserSchema, new RoleSchema, new UserRoleSchema];
     }
+
+
+    public function testCreate()
+    {
+        $ret = User::create([
+            'account' => 'admin',
+        ]);
+        $this->assertResultSuccess($ret);
+    }
+
 }

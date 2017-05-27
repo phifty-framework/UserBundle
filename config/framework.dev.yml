@@ -36,3 +36,4 @@ ServiceProviders:
       - bundles
 Bundles:
   UserBundle:
+    UseAccount: true
