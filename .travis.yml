@@ -11,6 +11,8 @@ matrix:
   - php: "hhvm"
 
 install:
+- composer install
+- composer require "satooshi/php-coveralls" "^1" --dev --no-update
 - ./frameworks/phifty/travis/install
 
 before_script:
