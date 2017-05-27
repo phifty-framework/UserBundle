@@ -9,3 +9,4 @@ config/*.php
 /frameworks
 config/database.yml
 config/framework.yml
+/app
