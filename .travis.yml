@@ -11,10 +11,7 @@ matrix:
   - php: "hhvm"
 
 install:
-- travis_retry composer install
-- travis_retry composer require "satooshi/php-coveralls" "^1" --dev --no-update
 - ./frameworks/phifty/travis/install
-- phpenv config-add ./frameworks/phifty/travis/config/$TRAVIS_PHP_VERSION.ini
 
 before_script:
 - phpenv rehash
