@@ -6,3 +6,4 @@ Model/*CollectionBase.php
 Model/*RepoBase.php
 Model/*SchemaProxy.php
 config/*.php
+/frameworks
