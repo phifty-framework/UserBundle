@@ -1,5 +1,7 @@
 <?php
+
 namespace UserBundle\Controller;
+
 use Phifty\Controller;
 
 /**
