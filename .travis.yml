@@ -16,14 +16,7 @@ install:
 before_script:
 - ./frameworks/phifty/travis/before_script
 - phpenv rehash
-- cp -v config/framework.dev.yml config/framework.yml
-- cp -v config/database.dev.yml config/database.yml
-- cp -r frameworks/phifty/app .
-- php vendor/bin/phifty bootstrap
-- php vendor/bin/maghead use config/database.yml
-- php vendor/bin/maghead db create
-- php vendor/bin/maghead schema build
-- php vendor/bin/maghead sql --rebuild
+- ./travis/before_script
 
 script:
 - time php bootstrap.php
