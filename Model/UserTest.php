@@ -18,11 +18,18 @@ class UserTest extends ModelTestCase
     }
 
 
-    public function testCreate()
+    public function testCreateLoadAndDelete()
     {
         $ret = User::create([
             'account' => 'admin',
         ]);
+        $this->assertResultSuccess($ret);
+
+        $user = User::load($ret->key);
+        $this->assertNotNull($user);
+        $this->assertInstanceOf('UserBundle\\Model\\User', $user);
+
+        $ret = $user->delete();
         $this->assertResultSuccess($ret);
     }
 
