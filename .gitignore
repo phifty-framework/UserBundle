@@ -1,3 +1,7 @@
 /vendor
 /bootstrap.php
 .maghead-cli.yml
+Model/*Base.php
+Model/*CollectionBase.php
+Model/*RepoBase.php
+Model/*SchemaProxy.php
