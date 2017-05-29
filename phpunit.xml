@@ -20,8 +20,11 @@
   <filter>
     <whitelist>
       <directory suffix=".php">.</directory>
-      <exclude>vendor/</exclude>
-      <exclude>frameworks/</exclude>
+      <exclude>
+        <directory>vendor</directory>
+        <directory>frameworks</directory>
+      </exclude>
     </whitelist>
   </filter>
+
 </phpunit>
