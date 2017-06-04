@@ -5,6 +5,6 @@ use Phifty\Controller;
 class RegisterController extends Controller
 {
     public function indexAction() {
-        return $this->render("@UserBundle/register.html");
+        return $this->render("@UserBundle/register.html.twig");
     }
 }

@@ -11,7 +11,7 @@ class ConfirmController extends Controller
         $token = $this->request->param('token');
 
         $bundle = UserBundle::getInstance();
-        $template = $bundle->config('confirmation.template') ?: '@UserBundle/confirmed.html';
+        $template = $bundle->config('confirmation.template') ?: '@UserBundle/confirmed.html.twig';
 
         $user = User::load(['auth_token' => $token]);
 

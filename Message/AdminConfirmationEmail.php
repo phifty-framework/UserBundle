@@ -16,7 +16,7 @@ class AdminConfirmationEmail extends BaseEmail
         parent::__construct();
         $this['user'] = $user;
         $this->setSubject( __('新的使用者註冊: %1', $user->name ?: $user->email ));
-        $this->setTemplate( '@UserBundle/email/zh_TW/admin_confirmation.html' );
+        $this->setTemplate( '@UserBundle/email/zh_TW/admin_confirmation.html.twig' );
     }
 
 }

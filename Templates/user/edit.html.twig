@@ -1,7 +1,7 @@
 {# 
 vim:filetype=htmldjango: 
 #}
-{% extends '@CRUD/edit.html' %}
+{% extends '@CRUD/edit.html.twig' %}
 
 {% block section_body %}
 
@@ -34,7 +34,7 @@ vim:filetype=htmldjango:
             {% endif %}
 
             {% if bundle.config('MultiRole') %}
-                {% include '@UserBundle/user/role_editor.html' %}
+                {% include '@UserBundle/user/role_editor.html.twig' %}
             {% else %}
                 {# for single user role #}
                 {{ CRUD.Action.renderField('role')|raw }}
@@ -51,7 +51,7 @@ vim:filetype=htmldjango:
                 #}
             </fieldset>
 
-            {% include '@CRUD/controll.html' %}
+            {% include '@CRUD/controll.html.twig' %}
         </form>
     </div>
 

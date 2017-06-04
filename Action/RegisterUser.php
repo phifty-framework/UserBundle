@@ -163,11 +163,11 @@ class RegisterUser extends CreateRecordAction
             $message->setReplyTo(array($replyTo));
         }
 
-        $userTemplate = $emailConfig->config('user_template') ?:  '@UserBundle/email/user_confirm/user.html';
-        $adminTemplate = $emailConfig->config('admin_template') ?: '@UserBundle/email/user_confirm/admin.html';
+        $userTemplate = $emailConfig->config('user_template') ?:  '@UserBundle/email/user_confirm/user.html.twig';
+        $adminTemplate = $emailConfig->config('admin_template') ?: '@UserBundle/email/user_confirm/admin.html.twig';
 
         $view = kernel()->view;
-        $html = $view->render( '@UserBundle/email/zh_TW/registration.html' , array(
+        $html = $view->render( '@UserBundle/email/zh_TW/registration.html.twig' , array(
             'user'  => $user,
         ));
         $message->setBody($html,'text/html');
@@ -176,7 +176,7 @@ class RegisterUser extends CreateRecordAction
 
 
         $view = kernel()->view;
-        $html = $view->render( '@UserBundle/email/zh_TW/registration.html' , array(
+        $html = $view->render( '@UserBundle/email/zh_TW/registration.html.twig' , array(
             'user'  => $user,
         ));
         $message->setBody($html,'text/html');

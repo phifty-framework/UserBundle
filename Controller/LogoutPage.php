@@ -11,6 +11,6 @@ class LogoutPage extends \Phifty\Controller
         return $this->redirect('/bs/login');
 
         # create a page with logout message and go back to mainpage button
-        return $this->render('@UserBundle/logout.html');
+        return $this->render('@UserBundle/logout.html.twig');
     }
 }
