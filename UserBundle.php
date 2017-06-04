@@ -69,7 +69,10 @@ class UserBundle extends Bundle
         $this->route('/bs/logout' , 'LogoutController' ); // refers to \User\Controller\Logout
         $this->route('/bs/logged-out' , 'LogoutPage' );
 
+        $this->route('/bs/login', 'LoginController');
+
         // $this->route('/login/:code', 'OrgLoginController');
+
         if ($this->config('AllowSignUp')) {
             $this->route( '/bs/user/register' , 'RegisterController' );
         }
