@@ -1,6 +1,6 @@
 <?php
 namespace UserBundle\Controller;
-use Phifty\Controller;
+use Phifty\Routing\Controller;
 use UserBundle\Model\User;
 use UserBundle\UserBundle;
 

@@ -2,7 +2,7 @@
 
 namespace UserBundle\Controller;
 
-use Phifty\Controller;
+use Phifty\Routing\Controller;
 
 /**
  * Csrf Token service provider with Simple CORS

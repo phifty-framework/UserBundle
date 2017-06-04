@@ -2,9 +2,9 @@
 
 namespace UserBundle\Controller;
 
-use Phifty\Controller;
+use Phifty\Routing\Controller;
 
-class LogoutPage extends \Phifty\Controller
+class LogoutPage extends \Phifty\Routing\Controller
 {
     function indexAction()
     {

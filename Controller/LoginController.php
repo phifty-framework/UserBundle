@@ -3,7 +3,7 @@ namespace UserBundle\Controller;
 
 use UserBundle\UserBundle;
 use UserBundle\Action\Login;
-use Phifty\Controller;
+use Phifty\Routing\Controller;
 use AdminUI\AdminUI;
 
 class LoginController extends Controller
