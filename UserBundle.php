@@ -63,14 +63,14 @@ class UserBundle extends Bundle
     }
 
     /* init method */
-    public function init()
+    public function boot()
     {
         // this is overrided by AdminUI routes
-        $this->route( '/bs/logout' , 'LogoutController' ); // refers to \User\Controller\Logout
-        $this->route( '/bs/logged_out' , 'LogoutPage' );
-        // $this->route('/login/:code', 'OrgLoginController');
+        $this->route('/bs/logout' , 'LogoutController' ); // refers to \User\Controller\Logout
+        $this->route('/bs/logged-out' , 'LogoutPage' );
 
-        if ( $this->config('AllowSignUp') ) {
+        // $this->route('/login/:code', 'OrgLoginController');
+        if ($this->config('AllowSignUp')) {
             $this->route( '/bs/user/register' , 'RegisterController' );
         }
 
