@@ -2,6 +2,7 @@
 <?php
 require 'bootstrap.php';
 
+use UserBundle\Model\User;
 use GetOptionKit\OptionCollection;
 use GetOptionKit\OptionParser;
 use GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
@@ -22,7 +23,6 @@ if (count($args) < 1) {
 
 $userId = $args[0];
 
-use UserBundle\Model\User;
 
 $password = $result->password;
 if (! $password) {
