@@ -12,20 +12,16 @@ class Login extends Action
 
     protected $enableCSRFToken = false;
 
-    public function findUserByEmailOrAccount($email, $account)
+    public function findUserByEmailOrAccount($email, $account = null)
     {
         $cUser = kernel()->currentUser;
         $userModelClass = $cUser->getModelClass();
-        $user = new $userModelClass;
+        $userModelClass;
         if ($account) {
-            $ret = $user->load(['account' => $account]);
-        } else if ( $email ) {
-            $ret = $user->load(['email' => $email]);
+            return $userModelClass::load(['account' => $account]);
+        } else {
+            return $userModelClass::load(['email' => $email]);
         }
-        if ($ret->error) {
-            return null;
-        }
-        return $user;
     }
 
     public function run()
@@ -64,15 +60,6 @@ class Login extends Action
         $currentUser->setRecord($this->user);
 
         $this->success(_('登入成功'));
-
-        $log = new ActionLog;
-        $log->create([
-            'action'       => $this->description(),
-            'action_class' => get_class($this),
-            'message'      => $this->describe(),
-            'user_id'      => $currentUser->id,
-            // 'data'         => yaml_emit($this->args),
-        ]);
 
         $csrfToken = kernel()->actionService['csrf_token_new'];
         @setcookie('csrf', $csrfToken->hash, 0, '/');
