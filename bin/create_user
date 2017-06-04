@@ -1,35 +1,41 @@
 #!/usr/bin/env php
 <?php
-require 'main.php';
+require 'bootstrap.php';
 
-use GetOptionKit\GetOptionKit;
-$opt = new GetOptionKit;
-$opt->add( 'r|role?' , 'role' );
-$opt->add( 'p|pass?' , 'password' );
+use GetOptionKit\OptionCollection;
+use GetOptionKit\OptionParser;
+use GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
 
-$result = $opt->parse( $argv );
+$opts = new OptionCollection;
+$opts->add( 'r|role?' , 'role' );
+$opts->add( 'p|password?' , 'password' );
 
+$parser = new OptionParser($opts);
+$result = $parser->parse( $argv );
 
 $args = $result->getArguments();
-if ( count($args) < 2 ) {
-    $opt->specs->printOptions();
+if (count($args) < 1) {
+    $printer = new ConsoleOptionPrinter;
+    echo $printer->render($opts);
     exit(0);
 }
 
-$userId = $args[1];
-$user = new UserBundle\Model\User;
+$userId = $args[0];
 
-$password = $result->pass;
-if ( ! $password ) {
+use UserBundle\Model\User;
+
+$password = $result->password;
+if (! $password) {
     $password = UserBundle\Utils::generate_password(6);
 }
 
-$ret = $user->create(array( 
+$ret = User::create(array(
     'account'    => $userId,
     'email'      => $userId . '@localhost',
     'password'   => sha1($password),
     'remark'     => $password,
     'confirmed'  => true,
 ));
-
-echo "User created: " , join(', ', array( "id: " . $ret->id, "account: $userId" , "password: $password" )), "\n";
+echo "Key: {$ret->key}", PHP_EOL;
+echo "Password: {$password}", PHP_EOL;
+echo "User created: " , join(', ', array("account: $userId" , "password: $password" )), "\n";
