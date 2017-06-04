@@ -5,16 +5,14 @@ use Phifty\Security\CurrentUserRole;
 use UserBundle\Model\UserBase;
 use App\CurrentUser;
 
-class User extends UserBase
-    implements CurrentUserRole
+class User extends UserBase implements CurrentUserRole
 {
-
     public function dataLabel()
     {
         return $this->account;
     }
 
-    public function beforeCreate($args) 
+    public function beforeCreate($args)
     {
         return $args;
     }
@@ -23,7 +21,7 @@ class User extends UserBase
     {
         // if we have multi-roles, delete these associative records.
         if (isset($this->roles)) {
-            foreach ($this->getRoles() as $r ) {
+            foreach ($this->getRoles() as $r) {
                 $this->removeRole($r);
             }
         }
@@ -35,14 +33,15 @@ class User extends UserBase
      */
     public function getRoles()
     {
-        if( isset($this->roles) ) {
-            if( $roles = $this->roles->items() ) {
-                return array_map(function($role) { return $role->identity; } , $roles );
+        if (isset($this->roles)) {
+            if ($roles = $this->roles->items()) {
+                return array_map(function ($role) {
+                    return $role->identity;
+                }, $roles);
             }
-        }
-        elseif( isset($this->role) ) {
+        } elseif (isset($this->role)) {
             $role = $this->role;
-            if( is_object($role) ) {
+            if (is_object($role)) {
                 return array($role->identity);
             }
             return array($role);
@@ -58,7 +57,7 @@ class User extends UserBase
 
         // If multi-roles are defined
         if (isset($this->roles)) {
-            $role = Role::loadOrCreate([ 'identity' => $roleId ],'identity');
+            $role = Role::loadOrCreate([ 'identity' => $roleId ], 'identity');
             if (! $role->id) {
                 throw new Exception("Can't create or load Role record. '$roleId'");
             }
@@ -75,7 +74,7 @@ class User extends UserBase
             }
 
             return $role;
-        } else if (isset($this->role)) {
+        } elseif (isset($this->role)) {
             $this->update([ 'role' => $roleId ]);
         }
     }
@@ -84,7 +83,7 @@ class User extends UserBase
     /**
      * Remove a role from this user.
      *
-     * This method is only available when the feature switch 'MultiRole' or 
+     * This method is only available when the feature switch 'MultiRole' or
      * 'CustomRole' is enabled.
      *
      * @param string $roleId role identity, can be 'admin', 'guest' or 'staff'
@@ -111,32 +110,32 @@ class User extends UserBase
      *
      * @return boolean
      */
-    public function hasRole($roleId) 
+    public function hasRole($roleId)
     {
-        if ( is_object($roleId) ) {
+        if (is_object($roleId)) {
             $roleId = $roleId->identity;
             $roles = $this->getRoles();
-            return in_array($roleId,$roles);
+            return in_array($roleId, $roles);
         }
-        if ( isset($this->roles) ) {
+        if (isset($this->roles)) {
             $roles = $this->getRoles();
-            return in_array($roleId,$roles);
-        }
-        elseif( isset($this->role) ) {
+            return in_array($roleId, $roles);
+        } elseif (isset($this->role)) {
             return $this->role == $roleId;
         }
     }
 
     /**
-     * This method is used in AdminEmail, which returns an array structure that 
+     * This method is used in AdminEmail, which returns an array structure that
      * can be used for SwiftMailer ->setTo, ->setCc, ->setBcc methods
      *
      * @return array
      */
-    public function asMailEntry() {
-        if ( $this->name && $this->email ) {
+    public function asMailEntry()
+    {
+        if ($this->name && $this->email) {
             return array( $this->email => $this->name );
-        } elseif ( $this->email ) {
+        } elseif ($this->email) {
             return array( $this->email );
         }
         return array();

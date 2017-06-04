@@ -15,12 +15,12 @@ class UserSchema extends DeclareSchema
         $this->column('password')
             ->renderable(false)
             ->varchar(128)
-            ->label( '密碼' )
+            ->label('密碼')
             ;
 
         $this->column('auth_token')
             ->varchar(128)
-            ->label( '驗證密碼' )
+            ->label('驗證密碼')
             ->renderable(false)
             ;
 

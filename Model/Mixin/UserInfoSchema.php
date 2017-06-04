@@ -8,8 +8,8 @@ class UserInfoSchema extends MixinDeclareSchema
 {
     public function schema($options = array())
     {
-        if ( isset($options['UseAccount']) ) {
-            $this->column( 'account' )
+        if (isset($options['UseAccount'])) {
+            $this->column('account')
                 ->varchar(16)
                 ->label('帳號');
         }
@@ -21,7 +21,7 @@ class UserInfoSchema extends MixinDeclareSchema
 
         $this->column('email')
             ->varchar(80)
-            ->label( _('E-mail') );
+            ->label(_('E-mail'));
 
         $this->column('name')
             ->varchar(30)
@@ -35,26 +35,25 @@ class UserInfoSchema extends MixinDeclareSchema
 
 
         if ($options['MultiRole']) {
-            $this->many('user_roles','UserBundle\\Model\\UserRoleSchema','user_id','id');
-            $this->manyToMany('roles','user_roles','role');
-
-        } else if ($options['CustomRole']) {
-            $this->column( 'role')
+            $this->many('user_roles', 'UserBundle\\Model\\UserRoleSchema', 'user_id', 'id');
+            $this->manyToMany('roles', 'user_roles', 'role');
+        } elseif ($options['CustomRole']) {
+            $this->column('role')
                 ->renderAs('SelectInput')
                 ->refer(RoleSchema::class)
-                ->validValues(function() {
+                ->validValues(function () {
                     $roles = new \UserBundle\Model\RoleCollection;
-                    return $roles->toPairs('label','identity');
+                    return $roles->toPairs('label', 'identity');
                 })
                 ->varchar(12)
                 ->required()
-                ->label( '角色' )
+                ->label('角色')
                 ;
-            $this->belongsTo('role','UserBundle\\Model\\RoleSchema','identity','role');
+            $this->belongsTo('role', 'UserBundle\\Model\\RoleSchema', 'identity', 'role');
         } else {
-            $this->column( 'role')
+            $this->column('role')
                 ->varchar(12)
-                ->validValues( array(
+                ->validValues(array(
                     '管理員' => 'admin',
                     '一般使用者' => 'user',
                     '工作人員' => 'staff',
@@ -62,7 +61,7 @@ class UserInfoSchema extends MixinDeclareSchema
                 ))
                 ->default('user')
                 ->renderAs('SelectInput')
-                ->label( '角色' )
+                ->label('角色')
                 ;
         }
 
@@ -70,9 +69,5 @@ class UserInfoSchema extends MixinDeclareSchema
             ->varchar(64)
             ->label('Company Name')
             ;
-
     }
 }
-
-
-

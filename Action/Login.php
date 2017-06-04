@@ -1,5 +1,7 @@
 <?php
+
 namespace UserBundle\Action;
+
 use ActionKit\Action;
 
 class Login extends Action

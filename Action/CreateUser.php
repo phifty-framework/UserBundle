@@ -9,11 +9,11 @@ class CreateUser extends CreateRecordAction implements ActionDescriptor
 {
     public $recordClass = 'UserBundle\\Model\\User';
 
-    public function __construct( $args = array(), $record = null, $currentUser = null ) 
+    public function __construct($args = array(), $record = null, $currentUser = null)
     {
         $cUser = kernel()->currentUser;
         $this->recordClass = $cUser->getModelClass();
-        return parent::__construct( $args, $record, $currentUser );
+        return parent::__construct($args, $record, $currentUser);
     }
 
     public function describe()
@@ -26,22 +26,25 @@ class CreateUser extends CreateRecordAction implements ActionDescriptor
             $record->account);
     }
 
-    public function description() { return '建立帳號'; }
+    public function description()
+    {
+        return '建立帳號';
+    }
 
-    public function schema() 
+    public function schema()
     {
         $this->useRecordSchema();
 
         $cUser = kernel()->currentUser;
 
-        if ( ! $cUser->hasRole('admin') ) {
-            $this->filterOut('role','password');
+        if (! $cUser->hasRole('admin')) {
+            $this->filterOut('role', 'password');
         }
 
         // override account attributes
         $this->param('account')
             ->required()
-            ->validator(function($value) {
+            ->validator(function ($value) {
                 if (preg_match('/\W/', $value)) {
                     return [false, "帳號不可使用英文、數字、底線之外的字元。"];
                 }
@@ -53,7 +56,7 @@ class CreateUser extends CreateRecordAction implements ActionDescriptor
 
         $this->param('email')
             ->required()
-            ->validator(function($value) {
+            ->validator(function ($value) {
                 if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     return [false, "不合法的 E-mail"];
                 }
@@ -105,26 +108,19 @@ class CreateUser extends CreateRecordAction implements ActionDescriptor
         $user = new User;
 
         if ($preferAccount && $account) {
-
-
             $user->load(array('account' => $account));
             if ($user->id) {
                 $this->invalidField('account', '重複的帳號。');
                 return _('這個帳號已經被使用囉。');
             }
-
-        } else if ($email) {
-
+        } elseif ($email) {
             $user->load(array('email' => $email));
             if ($user->id) {
                 $this->invalidField('email', '重複的帳號。');
                 return _('這個 E-mail 地址已經被使用囉。');
             }
-
         } else {
-
             return _('輸入資料錯誤。');
-
         }
         return true;
     }
@@ -143,15 +139,15 @@ class CreateUser extends CreateRecordAction implements ActionDescriptor
         $password1 = $this->arg('password1');
         $password2 = $this->arg('password2');
 
-        if ( ! $account && ! $email ) {
-            return $this->error( _('Please Enter Your Email Or Account.') );
+        if (! $account && ! $email) {
+            return $this->error(_('Please Enter Your Email Or Account.'));
         }
 
         $ret = $this->tryLoadUser($account, $email);
         if (true !== $ret) {
             if ($account) {
                 $this->invalidField('account', $ret);
-            } else if ($email) {
+            } elseif ($email) {
                 $this->invalidField('email', $ret);
             }
             return $this->error($ret);
@@ -189,4 +185,3 @@ class CreateUser extends CreateRecordAction implements ActionDescriptor
         return parent::run();
     }
 }
-

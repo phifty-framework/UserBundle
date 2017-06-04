@@ -1,19 +1,21 @@
 <?php
 namespace UserBundle\Model;
 
-class UserRole
-extends \UserBundle\Model\UserRoleBase
+class UserRole extends \UserBundle\Model\UserRoleBase
 {
     public function dataLabel()
     {
-        if( $this->label )
+        if ($this->label) {
             return $this->label;
-        if( $this->identity )
+        }
+        if ($this->identity) {
             return ucfirst($this->identity);
+        }
         return $this->id;
     }
 
-    public function dataKeyValue() {
+    public function dataKeyValue()
+    {
         return $this->identity;
     }
 

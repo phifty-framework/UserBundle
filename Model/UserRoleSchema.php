@@ -21,10 +21,7 @@ class UserRoleSchema extends DeclareSchema
         $cuser = kernel()->currentUser;
 
         // XXX: get current user model class to make link
-        $this->belongsTo('user', $cuser->getModelClass() . 'Schema','id','user_id');
-        $this->belongsTo('role', 'UserBundle\\Model\\RoleSchema','id','role_id');
+        $this->belongsTo('user', $cuser->getModelClass() . 'Schema', 'id', 'user_id');
+        $this->belongsTo('role', 'UserBundle\\Model\\RoleSchema', 'id', 'role_id');
     }
 }
-
-
-

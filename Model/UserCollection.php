@@ -1,30 +1,32 @@
 <?php
 namespace UserBundle\Model;
 
-class UserCollection 
-extends \UserBundle\Model\UserCollectionBase
+class UserCollection extends \UserBundle\Model\UserCollectionBase
 {
-
-    static public function findByRole($role) {
+    public static function findByRole($role)
+    {
         $collection = new self;
         $users = new self;
-        foreach( $collection as $item ) {
-            if ( $item->hasRole($role) ) {
+        foreach ($collection as $item) {
+            if ($item->hasRole($role)) {
                 $users->add($item);
             }
         }
         return $users;
     }
 
-    static public function findAdmin() {
+    public static function findAdmin()
+    {
         return self::findByRole('admin');
     }
 
-    static public function findUser() {
+    public static function findUser()
+    {
         return self::findByRole('user');
     }
 
-    static public function findStaff() {
+    public static function findStaff()
+    {
         return self::findByRole('staff');
     }
 
@@ -33,12 +35,13 @@ extends \UserBundle\Model\UserCollectionBase
      *
      * @return array
      */
-    public function asMailEntries() {
+    public function asMailEntries()
+    {
         $recipients = array();
-        foreach( $this as $item ) {
-            if ( $item->name && $item->email ) {
+        foreach ($this as $item) {
+            if ($item->name && $item->email) {
                 $recipients[ $item->email ] = $item->name;
-            } elseif ( $item->email ) {
+            } elseif ($item->email) {
                 $recipients[] = $item->email;
             }
         }

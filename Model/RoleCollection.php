@@ -1,11 +1,6 @@
 <?php
 namespace UserBundle\Model;
 
-
-
-class RoleCollection 
-extends \UserBundle\Model\RoleCollectionBase
+class RoleCollection extends \UserBundle\Model\RoleCollectionBase
 {
-
-    
 }
