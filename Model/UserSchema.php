@@ -2,6 +2,7 @@
 namespace UserBundle\Model;
 
 use Maghead\Schema\DeclareSchema;
+use UserBundle\Model\Mixin\UserInfoSchema;
 
 class UserSchema extends DeclareSchema
 {
@@ -24,11 +25,11 @@ class UserSchema extends DeclareSchema
             ->renderable(false)
             ;
 
-        $this->mixin('UserBundle\\Model\\Mixin\\UserInfoSchema', array(
+        $this->mixin(UserInfoSchema::class, [
             'UseAccount' => $bundle->config('UseAccount'),
             'MultiRole' => $bundle->config('MultiRole'),
             'CustomRole' => $bundle->config('CustomRole'),
-        ));
+        ]);
 
         $this->column('receive_email')
             ->boolean()
