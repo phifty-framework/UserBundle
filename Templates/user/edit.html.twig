@@ -3,62 +3,94 @@ vim:filetype=htmldjango:
 #}
 {% extends '@CRUD/edit.html.twig' %}
 
+{% set currentFormId = uniqid('editForm') %}
+{% set bundle = Kernel.bundle('UserBundle') %}
+
 {% block section_body %}
 
-<div class="tabs">
-    <ul>
-        <li><a href="#tabAccount">帳戶資料</a></li>
-        {% if CRUD.Record.id %}
-            <li><a href="#tabChangePassword">修改密碼</a></li>
+    <div class="action-result-container"> </div>
+
+    <form id="{{currentFormId}}" class="form-horizontal ajax-action" enctype="multipart/form-data" method="POST">
+
+        {{ CRUD.Action.renderSignatureWidget|raw }}
+        {{ CRUD.Action.renderCSRFTokenWidget|raw }}
+
+        {% if CRUD.Record.hasKey %}
+          {{CRUD.Action.renderKeyWidget|raw}}
         {% endif %}
-    </ul>
-    <div id="tabAccount">
-        <form class="ajax-action" enctype="multipart/form-data" method="POST">
-            {% set bundle = Kernel.bundle('UserBundle') %}
 
-            {% if CRUD.Record.id %}
-                {{ forms.hidden('id', CRUD.Record.id) }}
-            {% endif %}
+        <div>
+          <fieldset>
+            <legend class="clearfix">
+              <h3 class="pull-left">{% trans '帳號資料' %} *</h3>
+            </legend>
 
+            {# 一般使用者不可以修改自己的帳號 #}
+            {% if Kernel.currentUser.isAdmin() or Kernel.currentUser.isOrgAdmin() %}
 
-            {{ CRUD.Action.renderSignatureWidget|raw }}
+                {{CRUD.Action.renderField('account') |raw }}
 
-            {{ CRUD.Action.renderField('account')|raw }}
-
-            {{ CRUD.Action.renderField('email')|raw }}
-
-
-            {% if not CRUD.Record.id %}
-                {{ CRUD.Action.renderField('password1')|raw }}
-                {{ CRUD.Action.renderField('password2')|raw }}
-            {% endif %}
-
-            {% if bundle.config('MultiRole') %}
-                {% include '@UserBundle/user/role_editor.html.twig' %}
             {% else %}
-                {# for single user role #}
-                {{ CRUD.Action.renderField('role')|raw }}
+
+                {{CRUD.Action.renderField('account', { "readonly": "readonly", "disabled": "disabled" }) |raw }}
+
             {% endif %}
 
-            <hr/>
+            {# only admin users can select roles #}
+            {% if Kernel.currentUser.isAdmin() or Kernel.currentUser.isOrgAdmin() %}
+              {{CRUD.Action.renderField('role', { "id": roleSelectId }) |raw }}
+            {% endif %}
 
-            <fieldset>
-                <legend>訊息通知</legend>
-                {{ CRUD.Action.renderField('receive_email') | raw }}
+            {{CRUD.Action.renderField('email') |raw }}
 
-                {#
-                {{ CRUD.Action.renderField('receive_sms') | raw }}
-                #}
-            </fieldset>
+            {{CRUD.Action.renderField('name') |raw }}
 
-            {% include '@CRUD/controll.html.twig' %}
-        </form>
-    </div>
+            {# {{CRUD.Action.renderField('cellphone') |raw }} #}
 
-    {% if CRUD.Record.id %}
-        <div id="tabChangePassword">
-            {{ changePasswordAction.asView('AdminUI\\Action\\View\\StackView',{ ajax: true, submit_label: _('Change Password') }).render()|raw }}
+            {% set passwordControlId = uniqid('passwordControl') %}
+            <div id="{{passwordControlId}}"
+              {% if CRUD.Record.id %}
+                data-type="none"
+              {% else %}
+                data-type="email"
+                data-required="true"
+              {% endif %}
+              ></div>
+            <script>
+            jQuery(function() {
+                var elem = document.getElementById('{{passwordControlId}}');
+                var comp = React.createElement(SetPasswordControl, {
+                  "required": elem.dataset["required"],
+                  "type": elem.dataset["type"]
+                });
+                ReactDOM.render(comp, elem);
+            });
+            </script>
+
+          </fieldset>
         </div>
-    {% endif %}
-</div>
+
+
+        {% if bundle.config('MultiRole') %}
+            {% include '@UserBundle/user/role_editor.html.twig' %}
+        {% else %}
+            {# for single user role #}
+            {{ CRUD.Action.renderField('role')|raw }}
+        {% endif %}
+
+        <hr/>
+
+        <fieldset>
+            <legend>訊息通知</legend>
+            {{ CRUD.Action.renderField('receive_email') | raw }}
+
+            {#
+            {{ CRUD.Action.renderField('receive_sms') | raw }}
+            #}
+        </fieldset>
+
+        {% if Request._form_controls %}
+            {% include "@AppCRUD/controll.html" %}
+        {% endif %}
+    </form>
 {% endblock %}
