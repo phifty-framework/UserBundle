@@ -43,7 +43,7 @@ class Login extends Action
             return $this->error(_('無法登入，無此使用者'));
         }
 
-        if (!$this->user->id ) {
+        if (!$this->user->hasKey()) {
             return $this->error(_('錯誤的帳號或 E-mail'));
         }
 
