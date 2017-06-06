@@ -1,5 +1,7 @@
 <?php
+
 namespace UserBundle;
+
 use Phifty\Bundle;
 use Phifty\Region;
 use AdminUI\CRUDHandler;
@@ -16,13 +18,12 @@ class UserCRUDHandler extends \AdminUI\CRUDHandler
     public $listColumns = array('id','email','role');
 
     public $quicksearchFields = [ 'email', 'account' ];
-    
 
     public function editRegionActionPrepare()
     {
         parent::editRegionActionPrepare();
         $record = $this->getCurrentRecord();
-        if ( $record->id ) {
+        if ($record->hasKey()) {
             $this->assign('changePasswordAction', new Action\ChangePassword( $_REQUEST , $record ));
             $this->assign('setNewPasswordAction', new Action\SetNewPassword( $_REQUEST , $record ));
         }
@@ -32,5 +33,4 @@ class UserCRUDHandler extends \AdminUI\CRUDHandler
             $this->assign('roles', $roles);
         }
     }
-    
 }
