@@ -12,11 +12,11 @@ vim:filetype=htmldjango:
 
     <form id="{{currentFormId}}" class="form-horizontal ajax-action" enctype="multipart/form-data" method="POST">
 
-        {{ CRUD.Action.renderSignatureWidget|raw }}
-        {{ CRUD.Action.renderCSRFTokenWidget|raw }}
+        {{ RecordAction.renderSignatureWidget|raw }}
+        {{ RecordAction.renderCSRFTokenWidget|raw }}
 
-        {% if CRUD.Record.hasKey %}
-          {{CRUD.Action.renderKeyWidget|raw}}
+        {% if Record.hasKey %}
+          {{RecordAction.renderKeyWidget|raw}}
         {% endif %}
 
         <div>
@@ -28,28 +28,28 @@ vim:filetype=htmldjango:
             {# 一般使用者不可以修改自己的帳號 #}
             {% if Kernel.currentUser.isAdmin() or Kernel.currentUser.isOrgAdmin() %}
 
-                {{CRUD.Action.renderField('account') |raw }}
+                {{RecordAction.renderField('account') |raw }}
 
             {% else %}
 
-                {{CRUD.Action.renderField('account', { "readonly": "readonly", "disabled": "disabled" }) |raw }}
+                {{RecordAction.renderField('account', { "readonly": "readonly", "disabled": "disabled" }) |raw }}
 
             {% endif %}
 
             {# only admin users can select roles #}
             {% if Kernel.currentUser.isAdmin() or Kernel.currentUser.isOrgAdmin() %}
-              {{CRUD.Action.renderField('role', { "id": roleSelectId }) |raw }}
+              {{RecordAction.renderField('role', { "id": roleSelectId }) |raw }}
             {% endif %}
 
-            {{CRUD.Action.renderField('email') |raw }}
+            {{RecordAction.renderField('email') |raw }}
 
-            {{CRUD.Action.renderField('name') |raw }}
+            {{RecordAction.renderField('name') |raw }}
 
-            {# {{CRUD.Action.renderField('cellphone') |raw }} #}
+            {# {{RecordAction.renderField('cellphone') |raw }} #}
 
             {% set passwordControlId = uniqid('passwordControl') %}
-            <div id="{{passwordControlId}}"
-              {% if CRUD.Record.id %}
+            <div id="{{passwordControlId}}" class="crud-password-control"
+              {% if Record.id %}
                 data-type="none"
               {% else %}
                 data-type="email"
@@ -75,17 +75,16 @@ vim:filetype=htmldjango:
             {% include '@UserBundle/user/role_editor.html.twig' %}
         {% else %}
             {# for single user role #}
-            {{ CRUD.Action.renderField('role')|raw }}
+            {{ RecordAction.renderField('role')|raw }}
         {% endif %}
 
         <hr/>
 
         <fieldset>
             <legend>訊息通知</legend>
-            {{ CRUD.Action.renderField('receive_email') | raw }}
-
+            {{ RecordAction.renderField('receive_email') | raw }}
             {#
-            {{ CRUD.Action.renderField('receive_sms') | raw }}
+            {{ RecordAction.renderField('receive_sms') | raw }}
             #}
         </fieldset>
 
