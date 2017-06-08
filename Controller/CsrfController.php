@@ -13,28 +13,45 @@ use Phifty\Routing\Controller;
  */
 class CsrfController extends Controller
 {
+    protected $csrfTrustedOrigins = [];
+
+    protected $csrfTrustedMethods = ['GET'];
+
     public function indexAction()
     {
-        $kernel = kernel();
-        header('Access-Control-Allow-Origin: ' . $kernel->getBaseUrl());
-        header('Access-Control-Allow-Methods: GET');
 
-        $domain = $kernel->config->get('framework','Domain');
-        if ($_SERVER['HTTP_HOST'] != $domain) {
-            return $this->toJson([
-                'error' => 'access denied'
-            ]);
+        // CSRF_TRUSTED_ORIGINS
+        header('Access-Control-Allow-Origin: ' . $this->kernel->getBaseUrl());
+        if (empty($this->csrfTrustedOrigins)) {
+            foreach ($this->csrfTrustedOrigins as $origin) {
+                // TODO: move this to trusted
+                header("Access-Control-Allow-Origin: $origin");
+            }
+        }
+        foreach ($this->csrfTrustedMethods as $method) {
+            header("Access-Control-Allow-Methods: $method");
         }
 
-        $currentUser = $kernel->currentUser;
+        /*
+        if ($domain = $this->kernel->config->get('framework','Domain')) {
+            if ($_SERVER['HTTP_HOST'] !== $domain) {
+                return $this->toJson([
+                    'error' => 'invalid domain, access denied'
+                ]);
+            }
+        }
+         */
+
+        $currentUser = $this->kernel->currentUser;
         if (!$currentUser->isLogged()) {
             return $this->toJson([
-                'error' => 'login required',
-                'redirect' => '/bs/login',
+                'error'          => 'login required',
+                'login_required' => true,
+                'redirect'       => '/bs/login',
             ]);
         }
 
-        $token = $kernel->actionService['csrf_token'];
+        $token = $this->kernel->actionService['csrf_token'];
         return $this->toJson($token->toPublicArray());
     }
 }
