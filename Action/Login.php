@@ -33,7 +33,6 @@ class Login extends Action
         $account   = trim($this->arg('account'));
         $email     = trim($this->arg('email'));
 
-        $redirect = $this->arg('redirect');
         $password = $this->arg('password');
 
         if (! $account && ! $email) {
@@ -66,9 +65,9 @@ class Login extends Action
         $csrfToken = kernel()->actionService['csrf_token_new'];
         @setcookie('csrf', $csrfToken->hash, 0, '/');
 
-        if ($redirect) {
-            return $this->redirect($redirect);
-        }
-        return $this->redirect('/bs');
+        $bundle = \UserBundle\UserBundle::getInstance();
+
+        $redirect = $this->arg('redirect') ?: $bundle->config('LoginRedirect') ?: '/bs';
+        return $this->redirect($redirect);
     }
 }

@@ -53,6 +53,7 @@ class UserBundle extends Bundle
 
     public function defaultConfig() {
         return array(
+            'LoginRedirect' => '/bs',
             'UseAccount' => true,
 
             // Disable by default.
