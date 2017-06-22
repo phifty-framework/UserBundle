@@ -1,7 +1,7 @@
 <?php
 namespace UserBundle\Action;
 
-use ActionKit\RecordAction\CreateRecordAction;
+use WebAction\RecordAction\CreateRecordAction;
 use Phifty\Message\Email;
 use UserBundle\Message\AdminConfirmationEmail;
 

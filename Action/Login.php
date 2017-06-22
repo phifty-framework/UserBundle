@@ -2,7 +2,7 @@
 
 namespace UserBundle\Action;
 
-use ActionKit\Action;
+use WebAction\Action;
 
 class Login extends Action
 {

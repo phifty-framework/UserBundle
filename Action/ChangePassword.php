@@ -1,7 +1,7 @@
 <?php
 namespace UserBundle\Action;
 
-use ActionKit\RecordAction\UpdateRecordAction;
+use WebAction\RecordAction\UpdateRecordAction;
 
 class ChangePassword extends UpdateRecordAction
 {

@@ -2,7 +2,7 @@
 
 namespace UserBundle\Action;
 
-use ActionKit\RecordAction\DeleteRecordAction;
+use WebAction\RecordAction\DeleteRecordAction;
 
 class DeleteUser extends DeleteRecordAction
 {

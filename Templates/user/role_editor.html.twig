@@ -2,7 +2,7 @@
 vim:filetype=htmldjango:
 #}
 
-{% set subview = CRUD.Action.asView('ActionKit\\View\\StackView',{ "no_form": 1 }) %}
+{% set subview = CRUD.Action.asView('WebAction\\View\\StackView',{ "no_form": 1 }) %}
 {{ subview.buildRelationalActionViewForExistingRecords('roles').render() |raw }}
 
 {# required variarbles "roles" #}

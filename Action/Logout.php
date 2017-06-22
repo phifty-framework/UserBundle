@@ -2,9 +2,9 @@
 
 namespace UserBundle\Action;
 
-use ActionKit;
+use WebAction;
 
-class Logout extends \ActionKit\Action
+class Logout extends \WebAction\Action
 {
     public function run()
     {

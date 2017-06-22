@@ -2,8 +2,8 @@
 
 namespace UserBundle\Action;
 
-use ActionKit\RecordAction\CreateRecordAction;
-use ActionKit\ActionDescriptor;
+use WebAction\RecordAction\CreateRecordAction;
+use WebAction\ActionDescriptor;
 
 class CreateUser extends CreateRecordAction implements ActionDescriptor
 {

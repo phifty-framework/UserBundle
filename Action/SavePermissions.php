@@ -1,7 +1,7 @@
 <?php
 namespace UserBundle\Action;
 
-use ActionKit\Action;
+use WebAction\Action;
 use Kendo\Model\AccessControlCollection;
 use Kendo\Model\AccessControl;
 use Exception;
