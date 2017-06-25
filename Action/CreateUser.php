@@ -4,10 +4,11 @@ namespace UserBundle\Action;
 
 use WebAction\RecordAction\CreateRecordAction;
 use WebAction\ActionDescriptor;
+use UserBundle\Model\User;
 
 class CreateUser extends CreateRecordAction implements ActionDescriptor
 {
-    public $recordClass = 'UserBundle\\Model\\User';
+    public $recordClass = User::class;
 
     public function __construct($args = array(), $record = null, $currentUser = null)
     {
