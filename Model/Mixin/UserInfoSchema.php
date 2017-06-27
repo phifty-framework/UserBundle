@@ -43,7 +43,11 @@ class UserInfoSchema extends MixinDeclareSchema
                 ->refer(RoleSchema::class)
                 ->validValues(function () {
                     $roles = new \UserBundle\Model\RoleCollection;
-                    return $roles->toPairs('label', 'identity');
+                    $items = [];
+                    foreach ($roles as $role) {
+                        $items[] = [ 'label' => $role->label, 'value' => $role->identity ];
+                    }
+                    return $items;
                 })
                 ->varchar(12)
                 ->required()
