@@ -53,12 +53,12 @@ class UserInfoSchema extends MixinDeclareSchema
         } else {
             $this->column('role')
                 ->varchar(12)
-                ->validValues(array(
-                    '管理員' => 'admin',
-                    '一般使用者' => 'user',
-                    '工作人員' => 'staff',
-                    '訪客' => 'guest'
-                ))
+                ->validValues([
+                    ['label' => '管理員', 'value' => 'admin'],
+                    ['label' => '一般使用者', 'value' => 'user'],
+                    ['label' => '工作人員', 'value' => 'staff'],
+                    ['label' => '訪客', 'value' => 'guest'],
+                ])
                 ->default('user')
                 ->renderAs('SelectInput')
                 ->label('角色')
