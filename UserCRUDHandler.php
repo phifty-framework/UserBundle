@@ -6,10 +6,11 @@ use Phifty\Bundle;
 use Phifty\Region;
 use AdminUI\CRUDHandler;
 use UserBundle\Model\RoleCollection;
+use UserBundle\Model\User;
 
 class UserCRUDHandler extends \AdminUI\CRUDHandler
 {
-    public $modelClass = 'UserBundle\\Model\\User';
+    public $modelClass = User::class;
 
     public $crudId     = 'user';
 
